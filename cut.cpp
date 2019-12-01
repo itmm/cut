@@ -8,20 +8,20 @@
 
 	int from { 0 }, to { 0 };
 	char delim { '\t' };
-	enum class Mode {
-		delim, chr, byte
+	enum class Mode : char {
+		delim = 'f', chr = 'c', byte = 'b'
 	} mode { Mode::delim };
 	bool processed { false };
 
 	void process(std::istream &in) {
 		
-#line 38 "index.md"
+#line 34 "index.md"
 
 	int cur { 1 };
 	char ch;
 	while (in.get(ch)) {
 		
-#line 49 "index.md"
+#line 45 "index.md"
 
 	if (ch == '\n') {
 		std::cout.put(ch);
@@ -45,7 +45,7 @@
 		++cur;
 	}
 
-#line 42 "index.md"
+#line 38 "index.md"
 ;
 	}
 	processed = true;
@@ -54,40 +54,12 @@
 ;
 	}
 
-	void parse_list(const char *src) {
-		
-#line 75 "index.md"
-
-	const char *s { src };
-	from = to = 0;
-	for (; isdigit(*s); ++s) {
-		from = from * 10 + (*s - '0');
-	}
-	if (*s == '-') {
-		++s;
-		if (isdigit(*s)) {
-			for (; isdigit(*s); ++s) {
-				to = to * 10 + (*s - '0');
-			}
-		} else {
-			to = std::numeric_limits<int>::max();
-		}
-	}
-	if (*s) {
-		std::cerr << "wrong list argument " << src << '\n';
-		from = to = 0;
-	}
-
-#line 22 "index.md"
-;
-	}
-
 	int main(int argc, char *argv[]) {
 		
-#line 32 "index.md"
+#line 28 "index.md"
 
 	
-#line 99 "index.md"
+#line 71 "index.md"
 
 	bool args_parsed { false };
 	for (int i = 1; i < argc; ++i) {
@@ -100,37 +72,69 @@
 				case 'd':
 					delim = arg[2];
 					break;
-				case 'f':
-					mode = Mode::delim;
-					parse_list(arg + 2);
+				case 'f': case 'b': case 'c': {
+					mode = static_cast<Mode>(arg[1]);
+					
+#line 104 "index.md"
+
+	const char *s { arg + 2 };
+	from = to = 0;
+	
+#line 120 "index.md"
+
+	for (; isdigit(*s); ++s) {
+		from = from * 10 + (*s - '0');
+	}
+
+#line 107 "index.md"
+;
+	if (*s == '-') {
+		++s;
+		
+#line 128 "index.md"
+
+	if (isdigit(*s)) {
+		for (; isdigit(*s); ++s) {
+			to = to * 10 + (*s - '0');
+		}
+	} else {
+		to = std::numeric_limits<int>::max();
+	}
+
+#line 110 "index.md"
+;
+	}
+	if (*s) {
+		std::cerr << "ignoring wrong list " << arg << '\n';
+		from = to = 0;
+	}
+
+#line 85 "index.md"
+;
 					break;
-				case 'b':
-					mode = Mode::byte;
-					parse_list(arg + 2);
-					break;
-				case 'c':
-					mode = Mode::chr;
-					parse_list(arg + 2);
-					break;
+				}
 				default:
 					if (arg[1] == '-' && arg[2] == '\0') {
 						args_parsed = true;
 						break;
 					}
-					std::cerr << "ignoring option " << arg << '\n';
+					std::cerr << "ignoring unknown option " << arg << '\n';
 			}
 		} else {
 			std::ifstream in { arg };
 			process(in);
 		}
 	}
+
+#line 29 "index.md"
+;
+
+#line 140 "index.md"
+
 	if (! processed) {
 		process(std::cin);
 	}
 
-#line 33 "index.md"
-;
-
-#line 26 "index.md"
+#line 22 "index.md"
 ;
 	}

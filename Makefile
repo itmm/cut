@@ -1,6 +1,6 @@
-.PHONY: all clean
+.PHONY: all tests clean
 
-all: cut
+all: tests
 
 cut.cpp: index.md
 	@echo HX
@@ -9,3 +9,7 @@ cut.cpp: index.md
 clean:
 	@echo RM
 	@rm -f cut cut.cpp
+
+tests: cut
+	@echo TESTS
+	@mkdir -p build
