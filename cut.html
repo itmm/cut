@@ -24,6 +24,9 @@ printing only special fields of each line
 <span class="in1"></span>}<br/>
 <span class="macro">@End(<span class="name">file: cut.cpp</span>)</span><br/>
 </code></div>
+<ul><li>
+starting with a <code><span class="fn">main</span></code> function
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -31,6 +34,9 @@ printing only special fields of each line
 <span class="in1"></span><span class="macro">@put(<span class="name">parse args</span>)</span>;<br/>
 <span class="macro">@end(<span class="name">main</span>)</span><br/>
 </code></div>
+<ul><li>
+parsing command line arguments
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -43,6 +49,11 @@ printing only special fields of each line
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
+<ul><li>
+function to process each file
+</li><li>
+the flag <code><span class="var">processed</span></code> indicates if some files were processed already
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -52,6 +63,9 @@ printing only special fields of each line
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">main</span>)</span><br/>
 </code></div>
+<ul><li>
+use standard input if no other files were processed
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -64,6 +78,11 @@ printing only special fields of each line
 <span class="in1"></span><span class="var">processed</span> = <span class="num">true</span>;<br/>
 <span class="macro">@end(<span class="name">process</span>)</span><br/>
 </code></div>
+<ul><li>
+process all characters
+</li><li>
+<code><span class="var">cur</span></code> keeps track of current item number (starting at <code><span class="num">1</span></code>)
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -75,6 +94,11 @@ printing only special fields of each line
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process ch</span>)</span><br/>
 </code></div>
+<ul><li>
+reset <code><span class="var">cur</span></code> on newline
+</li><li>
+and print the newline
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -86,6 +110,9 @@ printing only special fields of each line
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process prereqs</span>)</span><br/>
 </code></div>
+<ul><li>
+function indicates if the current item should be printed
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -98,6 +125,9 @@ printing only special fields of each line
 <span class="in1"></span><span class="macro">@put(<span class="name">process post</span>)</span>;<br/>
 <span class="macro">@end(<span class="name">process ch</span>)</span><br/>
 </code></div>
+<ul><li>
+copy the character if it should be printed
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -109,6 +139,9 @@ printing only special fields of each line
 <span class="in1"></span>} <span class="var">mode</span> { <span class="type">Mode</span>::<span class="var">delim</span> };<br/>
 <span class="macro">@end(<span class="name">process prereqs</span>)</span><br/>
 </code></div>
+<ul><li>
+tabulator is the default delimiter
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -165,36 +198,79 @@ printing only special fields of each line
 <span class="in1"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">i</span> = <span class="num">1</span>; <span class="var">i</span> &lt; <span class="var">argc</span>; ++<span class="var">i</span>) {<br/>
 <span class="in2"></span><span class="type">const</span> <span class="type">char</span> *<span class="var">arg</span> = <span class="var">argv</span>[<span class="var">i</span>];<br/>
 <span class="in2"></span><span class="keyword">if</span> (! <span class="var">args_parsed</span> &amp;&amp; <span class="var">arg</span>[<span class="num">0</span>] == <span class="str">'-'</span>) {<br/>
-<span class="in3"></span><span class="keyword">switch</span> (<span class="var">arg</span>[<span class="num">1</span>]) {<br/>
-<span class="in4"></span><span class="keyword">case</span> <span class="str">'\0'</span>:<br/>
-<span class="in5"></span><span class="fn">process</span>(<span class="type">std</span>::<span class="var">cin</span>);<br/>
-<span class="in5"></span><span class="keyword">break</span>;<br/>
-<span class="in4"></span><span class="keyword">case</span> <span class="str">'d'</span>:<br/>
-<span class="in5"></span><span class="var">delim</span> = <span class="var">arg</span>[<span class="num">2</span>];<br/>
-<span class="in5"></span><span class="keyword">break</span>;<br/>
-<span class="in4"></span><span class="keyword">case</span> <span class="str">'f'</span>: <span class="keyword">case</span> <span class="str">'b'</span>: <span class="keyword">case</span> <span class="str">'c'</span>: {<br/>
-<span class="in5"></span><span class="var">mode</span> = <span class="var">static_cast</span>&lt;<span class="type">Mode</span>&gt;(<span class="var">arg</span>[<span class="num">1</span>]);<br/>
-<span class="in5"></span><span class="macro">@put(<span class="name">parse list</span>)</span>;<br/>
-<span class="in5"></span><span class="keyword">break</span>;<br/>
-<span class="in4"></span>}<br/>
-<span class="in4"></span><span class="keyword">default</span>:<br/>
-<span class="in5"></span><span class="keyword">if</span> (<span class="var">arg</span>[<span class="num">1</span>] == <span class="str">'-'</span> &amp;&amp; <span class="var">arg</span>[<span class="num">2</span>] == <span class="str">'\0'</span>) {<br/>
-<span class="in6"></span><span class="var">args_parsed</span> = <span class="num">true</span>;<br/>
-<span class="in6"></span><span class="keyword">break</span>;<br/>
-<span class="in5"></span>}<br/>
-<span class="in5"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"ignoring unknown option "</span> &lt;&lt; <span class="var">arg</span> &lt;&lt; <span class="str">'\n'</span>;<br/>
-<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="macro">@put(<span class="name">parse arg</span>)</span>;<br/>
 <span class="in2"></span>} <span class="keyword">else</span> {<br/>
-<span class="in3"></span><span class="type">std</span>::<span class="type">ifstream</span> <span class="keyword">in</span> { <span class="var">arg</span> };<br/>
-<span class="in3"></span><span class="keyword">if</span> (<span class="keyword">in</span>) {<br/>
-<span class="in4"></span><span class="fn">process</span>(<span class="keyword">in</span>);<br/>
-<span class="in3"></span>} <span class="keyword">else</span> {<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"can't open "</span> &lt;&lt; <span class="var">arg</span> &lt;&lt; <span class="str">'\n'</span>;<br/>
-<span class="in4"></span><span class="var">processed</span> = <span class="num">true</span>;<br/>
-<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="macro">@put(<span class="name">process file</span>)</span>;<br/>
 <span class="in2"></span>}<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">parse args</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">parse arg</span>)</span><br/>
+<span class="in1"></span><span class="keyword">switch</span> (<span class="var">arg</span>[<span class="num">1</span>]) {<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">arg switch</span>)</span>;<br/>
+<span class="in2"></span><span class="keyword">default</span>:<br/>
+<span class="in3"></span><span class="macro">@put(<span class="name">end of options</span>)</span>;<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt;<br/>
+<span class="in4"></span><span class="str">"ignoring unknown"</span><br/>
+<span class="in4"></span><span class="str">" option "</span> &lt;&lt; <span class="var">arg</span> &lt;&lt; <span class="str">'\n'</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">parse arg</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">end of options</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">arg</span>[<span class="num">1</span>] == <span class="str">'-'</span> &amp;&amp; <span class="var">arg</span>[<span class="num">2</span>] == <span class="str">'\0'</span>) {<br/>
+<span class="in2"></span><span class="var">args_parsed</span> = <span class="num">true</span>;<br/>
+<span class="in2"></span><span class="keyword">break</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">end of options</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">arg switch</span>)</span><br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'\0'</span>:<br/>
+<span class="in2"></span><span class="fn">process</span>(<span class="type">std</span>::<span class="var">cin</span>);<br/>
+<span class="in2"></span><span class="keyword">break</span>;<br/>
+<span class="macro">@end(<span class="name">arg switch</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">arg switch</span>)</span><br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'d'</span>:<br/>
+<span class="in2"></span><span class="var">delim</span> = <span class="var">arg</span>[<span class="num">2</span>];<br/>
+<span class="in2"></span><span class="keyword">break</span>;<br/>
+<span class="macro">@end(<span class="name">arg switch</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">arg switch</span>)</span><br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'f'</span>: <span class="keyword">case</span> <span class="str">'b'</span>: <span class="keyword">case</span> <span class="str">'c'</span>: {<br/>
+<span class="in2"></span><span class="var">mode</span> = <span class="var">static_cast</span>&lt;<span class="type">Mode</span>&gt;(<span class="var">arg</span>[<span class="num">1</span>]);<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">parse list</span>)</span>;<br/>
+<span class="in2"></span><span class="keyword">break</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">arg switch</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">process file</span>)</span><br/>
+<span class="in1"></span><span class="type">std</span>::<span class="type">ifstream</span> <span class="keyword">in</span> { <span class="var">arg</span> };<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="keyword">in</span>) {<br/>
+<span class="in2"></span><span class="fn">process</span>(<span class="keyword">in</span>);<br/>
+<span class="in1"></span>} <span class="keyword">else</span> {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"can't open "</span> &lt;&lt;<br/>
+<span class="in3"></span><span class="var">arg</span> &lt;&lt; <span class="str">'\n'</span>;<br/>
+<span class="in2"></span><span class="var">processed</span> = <span class="num">true</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">process file</span>)</span><br/>
 </code></div>
 </div>
 <div><div>
@@ -218,7 +294,9 @@ printing only special fields of each line
 <span class="in2"></span><span class="macro">@put(<span class="name">parse to</span>)</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="in1"></span><span class="keyword">if</span> (*<span class="var">s</span>) {<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"ignoring wrong list "</span> &lt;&lt; <span class="var">arg</span> &lt;&lt; <span class="str">'\n'</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt;<br/>
+<span class="in3"></span><span class="str">"ignoring wrong list "</span> &lt;&lt;<br/>
+<span class="in3"></span><span class="var">arg</span> &lt;&lt; <span class="str">'\n'</span>;<br/>
 <span class="in2"></span><span class="fn">reset_list</span>();<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">parse list</span>)</span><br/>

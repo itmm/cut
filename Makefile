@@ -16,7 +16,7 @@ hx-run: $(MDs)
 
 clean:
 	@echo RM
-	@rm -f $(SRCs) $(EXEs)
+	@rm -f hx-run $(SRCs) $(EXEs)
 
 tests: $(EXEs)
 	@echo TESTS

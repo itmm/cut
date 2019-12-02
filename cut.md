@@ -184,7 +184,7 @@
 		process(std::cin);
 		break;
 @end(arg switch)
-````
+```
 
 ```
 @add(arg switch)
@@ -192,7 +192,7 @@
 		delim = arg[2];
 		break;
 @end(arg switch)
-````
+```
 
 ```
 @add(arg switch)
@@ -216,6 +216,7 @@
 	}
 @end(process file)
 ```
+
 ```
 @add(main prereqs)
 	void reset_list() {

@@ -2,33 +2,33 @@
 #line 5 "cut.md"
 
 	
-#line 20 "cut.md"
+#line 22 "cut.md"
 
 	#include <iostream>
 	
-#line 60 "cut.md"
+#line 69 "cut.md"
 
 	
-#line 114 "cut.md"
+#line 126 "cut.md"
 
 	#include <limits>
 	using nli = std::numeric_limits<int>;
 	int from { 0 }, to { nli::max() };
 
-#line 61 "cut.md"
+#line 70 "cut.md"
 ;
 	bool should_print(int cur) {
 		
-#line 122 "cut.md"
+#line 134 "cut.md"
 
 	return cur >= from && cur <= to;
 
-#line 63 "cut.md"
+#line 72 "cut.md"
 ;
 		return true;
 	}
 
-#line 81 "cut.md"
+#line 92 "cut.md"
 
 	char delim { '\t' };
 	enum class Mode : char {
@@ -36,18 +36,18 @@
 		byte = 'b'
 	} mode { Mode::delim };
 
-#line 22 "cut.md"
+#line 24 "cut.md"
 ;
 	bool processed { false };
 	void process(std::istream &in) {
 		
-#line 39 "cut.md"
+#line 44 "cut.md"
 
 	int cur { 1 };
 	char ch;
 	while (in.get(ch)) {
 		
-#line 50 "cut.md"
+#line 57 "cut.md"
 
 	if (ch == '\n') {
 		std::cout.put(ch);
@@ -55,11 +55,11 @@
 		continue;
 	}
 
-#line 70 "cut.md"
+#line 80 "cut.md"
 
 	bool print { should_print(cur) };
 	
-#line 91 "cut.md"
+#line 103 "cut.md"
 
 	if (mode == Mode::delim && ch == delim) {
 		++cur;
@@ -69,13 +69,13 @@
 		continue;
 	}
 
-#line 72 "cut.md"
+#line 82 "cut.md"
 ;
 	if (print) {
 		std::cout.put(ch);
 	}
 	
-#line 103 "cut.md"
+#line 115 "cut.md"
 
 	if (mode == Mode::byte) {
 		++cur;
@@ -84,23 +84,23 @@
 		++cur;
 	}
 
-#line 76 "cut.md"
+#line 86 "cut.md"
 ;
 
-#line 43 "cut.md"
+#line 48 "cut.md"
 ;
 	}
 	processed = true;
 
-#line 25 "cut.md"
+#line 27 "cut.md"
 ;
 	}
 
-#line 128 "cut.md"
+#line 140 "cut.md"
 
 	#include <fstream>
 
-#line 172 "cut.md"
+#line 221 "cut.md"
 
 	void reset_list() {
 		from = 0;
@@ -111,43 +111,55 @@
 ;
 	int main(int argc, char *argv[]) {
 		
-#line 14 "cut.md"
+#line 15 "cut.md"
 
 	
-#line 134 "cut.md"
+#line 146 "cut.md"
 
 	bool args_parsed { false };
 	for (int i = 1; i < argc; ++i) {
 		const char *arg = argv[i];
 		if (! args_parsed && arg[0] == '-') {
-			switch (arg[1]) {
-				case '\0':
-					process(std::cin);
-					break;
-				case 'd':
-					delim = arg[2];
-					break;
-				case 'f': case 'b': case 'c': {
-					mode = static_cast<Mode>(arg[1]);
-					
-#line 181 "cut.md"
+			
+#line 160 "cut.md"
+
+	switch (arg[1]) {
+		
+#line 182 "cut.md"
+
+	case '\0':
+		process(std::cin);
+		break;
+
+#line 190 "cut.md"
+
+	case 'd':
+		delim = arg[2];
+		break;
+
+#line 198 "cut.md"
+
+	case 'f': case 'b': case 'c': {
+		mode = static_cast<Mode>(arg[1]);
+		
+#line 230 "cut.md"
 
 	const char *s { arg + 2 };
 	reset_list();
 	
-#line 197 "cut.md"
+#line 248 "cut.md"
 
 	for (; isdigit(*s); ++s) {
 		from = from * 10 + (*s - '0');
 	}
 	to = from;
 
-#line 184 "cut.md"
+#line 233 "cut.md"
 ;
 	if (*s == '-') {
 		++s;
 		
-#line 206 "cut.md"
+#line 257 "cut.md"
 
 	to = 0;
 	if (isdigit(*s)) {
@@ -158,40 +170,63 @@
 		to = nli::max();
 	}
 
-#line 187 "cut.md"
+#line 236 "cut.md"
 ;
 	}
 	if (*s) {
-		std::cerr << "ignoring wrong list " << arg << '\n';
+		std::cerr <<
+			"ignoring wrong list " <<
+			arg << '\n';
 		reset_list();
 	}
 
-#line 148 "cut.md"
+#line 201 "cut.md"
 ;
-					break;
-				}
-				default:
-					if (arg[1] == '-' && arg[2] == '\0') {
-						args_parsed = true;
-						break;
-					}
-					std::cerr << "ignoring unknown option " << arg << '\n';
-			}
+		break;
+	}
+
+#line 162 "cut.md"
+;
+		default:
+			
+#line 173 "cut.md"
+
+	if (arg[1] == '-' && arg[2] == '\0') {
+		args_parsed = true;
+		break;
+	}
+
+#line 164 "cut.md"
+;
+			std::cerr <<
+				"ignoring unknown"
+				" option " << arg << '\n';
+	}
+
+#line 151 "cut.md"
+;
 		} else {
-			std::ifstream in { arg };
-			if (in) {
-				process(in);
-			} else {
-				std::cerr << "can't open " << arg << '\n';
-				processed = true;
-			}
+			
+#line 208 "cut.md"
+
+	std::ifstream in { arg };
+	if (in) {
+		process(in);
+	} else {
+		std::cerr << "can't open " <<
+			arg << '\n';
+		processed = true;
+	}
+
+#line 153 "cut.md"
+;
 		}
 	}
 
-#line 15 "cut.md"
+#line 16 "cut.md"
 ;
 
-#line 31 "cut.md"
+#line 35 "cut.md"
 
 	if (! processed) {
 		process(std::cin);
