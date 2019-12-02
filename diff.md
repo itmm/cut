@@ -4,7 +4,6 @@
 @Def(file: diff.cpp)
 	#include <fstream>
 	#include <iostream>
-	#include <vector>
 
 	void process(
 		std::istream &o, std::istream &n
@@ -59,38 +58,46 @@
 				std::cerr << "ignoring unknown option " << arg << '\n';
 			}
 		} else {
-			paths.emplace_back(arg);
+			if (! old_path) {
+				old_path = arg;
+			} else if (! new_path) {
+				new_path = arg;
+			} else {
+				std::cerr << "ignoring additional path " << arg << '\n';
+			}
 		}
 	}
-	paths.emplace_back("-");
-	if (paths.size() == 1) {
-		paths.emplace(paths.begin(), "/dev/null");
+	if (! old_path) {
+		old_path = "/dev/null";
 	}
-	if (paths[0] == "-") {
-		std::ifstream n { paths[1].c_str() };
+	if (! new_path) {
+		new_path = "-";
+	}
+	if (old_path == "-") {
+		std::ifstream n { new_path };
 		if (n) {
 			process(std::cin, n);
 		} else {
-			std::cerr << "can't open " << paths[1] << '\n';
+			std::cerr << "can't open " << new_path << '\n';
 		}
-	} else if (paths[1] == "-") {
-		std::ifstream o { paths[0].c_str() };
+	} else if (new_path == "-") {
+		std::ifstream o { old_path };
 		if (o) {
 			process(o, std::cin);
 		} else {
-			std::cerr << "can't open " << paths[0] << '\n';
+			std::cerr << "can't open " << old_path << '\n';
 		}
 	} else {
-		std::ifstream o { paths[0].c_str() };
-		std::ifstream n { paths[1].c_str() };
+		std::ifstream o { old_path };
+		std::ifstream n { new_path };
 		if (o && n) {
 			process(o, n);
 		} else {
 			if (! o) {
-				std::cerr << "can't open " << paths[0] << '\n';
+				std::cerr << "can't open " << old_path << '\n';
 			}
 			if (! n) {
-				std::cerr << "can't open " << paths[1] << '\n';
+				std::cerr << "can't open " << new_path << '\n';
 			}
 		}
 	}
