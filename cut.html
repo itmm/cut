@@ -18,26 +18,6 @@ printing only special fields of each line
 <div><div>
 <code>
 <span class="macro">@Def(<span class="name">file: cut.cpp</span>)</span><br/>
-<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">fstream</span>&gt;<br/>
-<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">limits</span>&gt;<br/>
-<span class="in1"></span><span class="keyword">using</span> <span class="var">nli</span> = <span class="type">std</span>::<span class="var">numeric_limits</span>&lt;<span class="type">int</span>&gt;;<br/>
-<br/>
-<span class="in1"></span><span class="type">int</span> <span class="var">from</span> { <span class="num">0</span> }, <span class="var">to</span> { <span class="var">nli</span>::<span class="fn">max</span>() };<br/>
-<br/>
-<span class="in1"></span><span class="type">char</span> <span class="var">delim</span> { <span class="str">'\t'</span> };<br/>
-<span class="in1"></span><span class="type">enum</span> <span class="keyword">class</span> <span class="type">Mode</span> : <span class="type">char</span> {<br/>
-<span class="in2"></span><span class="var">delim</span> = <span class="str">'f'</span>, <span class="var">chr</span> = <span class="str">'c'</span>, <span class="var">byte</span> = <span class="str">'b'</span><br/>
-<span class="in1"></span>} <span class="var">mode</span> { <span class="type">Mode</span>::<span class="var">delim</span> };<br/>
-<br/>
-<span class="in1"></span><span class="type">bool</span> <span class="fn">should_print</span>(<span class="type">int</span> <span class="var">cur</span>) {<br/>
-<span class="in2"></span><span class="keyword">return</span> <span class="var">cur</span> &gt;= <span class="var">from</span> &amp;&amp; <span class="var">cur</span> &lt;= <span class="var">to</span>;<br/>
-<span class="in1"></span>}<br/>
-<br/>
-<span class="in1"></span><span class="type">void</span> <span class="fn">reset_list</span>() {<br/>
-<span class="in2"></span><span class="var">from</span> = <span class="num">0</span>;<br/>
-<span class="in2"></span><span class="var">to</span> = <span class="var">nli</span>::<span class="fn">max</span>();<br/>
-<span class="in1"></span>}<br/>
-<br/>
 <span class="in1"></span><span class="macro">@put(<span class="name">main prereqs</span>)</span>;<br/>
 <span class="in1"></span><span class="type">int</span> <span class="fn">main</span>(<span class="type">int</span> <span class="var">argc</span>, <span class="type">char</span> *<span class="var">argv</span>[]) {<br/>
 <span class="in2"></span><span class="macro">@put(<span class="name">main</span>)</span>;<br/>
@@ -56,6 +36,7 @@ printing only special fields of each line
 <code>
 <span class="macro">@def(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">iostream</span>&gt;<br/>
+<span class="in1"></span><span class="macro">@put(<span class="name">process prereqs</span>)</span>;<br/>
 <span class="in1"></span><span class="type">bool</span> <span class="var">processed</span> { <span class="num">false</span> };<br/>
 <span class="in1"></span><span class="type">void</span> <span class="fn">process</span>(<span class="type">std</span>::<span class="type">istream</span> &amp;<span class="keyword">in</span>) {<br/>
 <span class="in2"></span><span class="macro">@put(<span class="name">process</span>)</span>;<br/>
@@ -97,6 +78,17 @@ printing only special fields of each line
 </div>
 <div><div>
 <code>
+<span class="macro">@def(<span class="name">process prereqs</span>)</span><br/>
+<span class="in1"></span><span class="macro">@put(<span class="name">should print prereqs</span>)</span>;<br/>
+<span class="in1"></span><span class="type">bool</span> <span class="fn">should_print</span>(<span class="type">int</span> <span class="var">cur</span>) {<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">should print</span>)</span>;<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="num">true</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">process prereqs</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
 <span class="macro">@add(<span class="name">process ch</span>)</span><br/>
 <span class="in1"></span><span class="type">bool</span> <span class="var">print</span> { <span class="fn">should_print</span>(<span class="var">cur</span>) };<br/>
 <span class="in1"></span><span class="macro">@put(<span class="name">process pre</span>)</span>;<br/>
@@ -105,6 +97,17 @@ printing only special fields of each line
 <span class="in1"></span>}<br/>
 <span class="in1"></span><span class="macro">@put(<span class="name">process post</span>)</span>;<br/>
 <span class="macro">@end(<span class="name">process ch</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">process prereqs</span>)</span><br/>
+<span class="in1"></span><span class="type">char</span> <span class="var">delim</span> { <span class="str">'\t'</span> };<br/>
+<span class="in1"></span><span class="type">enum</span> <span class="keyword">class</span> <span class="type">Mode</span> : <span class="type">char</span> {<br/>
+<span class="in2"></span><span class="var">delim</span> = <span class="str">'f'</span>, <span class="var">chr</span> = <span class="str">'c'</span>,<br/>
+<span class="in2"></span><span class="var">byte</span> = <span class="str">'b'</span><br/>
+<span class="in1"></span>} <span class="var">mode</span> { <span class="type">Mode</span>::<span class="var">delim</span> };<br/>
+<span class="macro">@end(<span class="name">process prereqs</span>)</span><br/>
 </code></div>
 </div>
 <div><div>
@@ -130,6 +133,29 @@ printing only special fields of each line
 <span class="in2"></span>++<span class="var">cur</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process post</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">should print prereqs</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">limits</span>&gt;<br/>
+<span class="in1"></span><span class="keyword">using</span> <span class="var">nli</span> = <span class="type">std</span>::<span class="var">numeric_limits</span>&lt;<span class="type">int</span>&gt;;<br/>
+<span class="in1"></span><span class="type">int</span> <span class="var">from</span> { <span class="num">0</span> }, <span class="var">to</span> { <span class="var">nli</span>::<span class="fn">max</span>() };<br/>
+<span class="macro">@end(<span class="name">should print prereqs</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">should print</span>)</span><br/>
+<span class="in1"></span><span class="keyword">return</span> <span class="var">cur</span> &gt;= <span class="var">from</span> &amp;&amp; <span class="var">cur</span> &lt;= <span class="var">to</span>;<br/>
+<span class="macro">@end(<span class="name">should print</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">fstream</span>&gt;<br/>
+<span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
 </div>
 <div><div>
@@ -169,6 +195,16 @@ printing only special fields of each line
 <span class="in2"></span>}<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">parse args</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
+<span class="in1"></span><span class="type">void</span> <span class="fn">reset_list</span>() {<br/>
+<span class="in2"></span><span class="var">from</span> = <span class="num">0</span>;<br/>
+<span class="in2"></span><span class="var">to</span> = <span class="var">nli</span>::<span class="fn">max</span>();<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
 </div>
 <div><div>

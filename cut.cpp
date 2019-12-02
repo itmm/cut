@@ -1,40 +1,53 @@
 
 #line 5 "cut.md"
 
-	#include <fstream>
+	
+#line 20 "cut.md"
+
+	#include <iostream>
+	
+#line 60 "cut.md"
+
+	
+#line 114 "cut.md"
+
 	#include <limits>
 	using nli = std::numeric_limits<int>;
-
 	int from { 0 }, to { nli::max() };
+
+#line 61 "cut.md"
+;
+	bool should_print(int cur) {
+		
+#line 122 "cut.md"
+
+	return cur >= from && cur <= to;
+
+#line 63 "cut.md"
+;
+		return true;
+	}
+
+#line 81 "cut.md"
 
 	char delim { '\t' };
 	enum class Mode : char {
-		delim = 'f', chr = 'c', byte = 'b'
+		delim = 'f', chr = 'c',
+		byte = 'b'
 	} mode { Mode::delim };
 
-	bool should_print(int cur) {
-		return cur >= from && cur <= to;
-	}
-
-	void reset_list() {
-		from = 0;
-		to = nli::max();
-	}
-
-	
-#line 40 "cut.md"
-
-	#include <iostream>
+#line 22 "cut.md"
+;
 	bool processed { false };
 	void process(std::istream &in) {
 		
-#line 58 "cut.md"
+#line 39 "cut.md"
 
 	int cur { 1 };
 	char ch;
 	while (in.get(ch)) {
 		
-#line 69 "cut.md"
+#line 50 "cut.md"
 
 	if (ch == '\n') {
 		std::cout.put(ch);
@@ -42,11 +55,11 @@
 		continue;
 	}
 
-#line 79 "cut.md"
+#line 70 "cut.md"
 
 	bool print { should_print(cur) };
 	
-#line 90 "cut.md"
+#line 91 "cut.md"
 
 	if (mode == Mode::delim && ch == delim) {
 		++cur;
@@ -56,13 +69,13 @@
 		continue;
 	}
 
-#line 81 "cut.md"
+#line 72 "cut.md"
 ;
 	if (print) {
 		std::cout.put(ch);
 	}
 	
-#line 102 "cut.md"
+#line 103 "cut.md"
 
 	if (mode == Mode::byte) {
 		++cur;
@@ -71,26 +84,37 @@
 		++cur;
 	}
 
-#line 85 "cut.md"
+#line 76 "cut.md"
 ;
 
-#line 62 "cut.md"
+#line 43 "cut.md"
 ;
 	}
 	processed = true;
 
-#line 44 "cut.md"
+#line 25 "cut.md"
 ;
 	}
 
-#line 26 "cut.md"
+#line 128 "cut.md"
+
+	#include <fstream>
+
+#line 172 "cut.md"
+
+	void reset_list() {
+		from = 0;
+		to = nli::max();
+	}
+
+#line 6 "cut.md"
 ;
 	int main(int argc, char *argv[]) {
 		
-#line 34 "cut.md"
+#line 14 "cut.md"
 
 	
-#line 113 "cut.md"
+#line 134 "cut.md"
 
 	bool args_parsed { false };
 	for (int i = 1; i < argc; ++i) {
@@ -106,24 +130,24 @@
 				case 'f': case 'b': case 'c': {
 					mode = static_cast<Mode>(arg[1]);
 					
-#line 151 "cut.md"
+#line 181 "cut.md"
 
 	const char *s { arg + 2 };
 	reset_list();
 	
-#line 167 "cut.md"
+#line 197 "cut.md"
 
 	for (; isdigit(*s); ++s) {
 		from = from * 10 + (*s - '0');
 	}
 	to = from;
 
-#line 154 "cut.md"
+#line 184 "cut.md"
 ;
 	if (*s == '-') {
 		++s;
 		
-#line 176 "cut.md"
+#line 206 "cut.md"
 
 	to = 0;
 	if (isdigit(*s)) {
@@ -134,7 +158,7 @@
 		to = nli::max();
 	}
 
-#line 157 "cut.md"
+#line 187 "cut.md"
 ;
 	}
 	if (*s) {
@@ -142,7 +166,7 @@
 		reset_list();
 	}
 
-#line 127 "cut.md"
+#line 148 "cut.md"
 ;
 					break;
 				}
@@ -164,15 +188,15 @@
 		}
 	}
 
-#line 35 "cut.md"
+#line 15 "cut.md"
 ;
 
-#line 50 "cut.md"
+#line 31 "cut.md"
 
 	if (! processed) {
 		process(std::cin);
 	}
 
-#line 28 "cut.md"
+#line 8 "cut.md"
 ;
 	}
