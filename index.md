@@ -7,3 +7,8 @@
 ```
 @inc(cut.md)
 ```
+
+```
+@inc(diff.md)
+```
+
