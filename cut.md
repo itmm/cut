@@ -1,22 +1,21 @@
 # Implementation of `cut`
+* printing only special fields of each line
 
 ```
 @Def(file: cut.cpp)
 	#include <fstream>
-	#include <iostream>
 	#include <limits>
 	using nli = std::numeric_limits<int>;
 
-	int from, to;
+	int from { 0 }, to { nli::max() };
 
 	char delim { '\t' };
 	enum class Mode : char {
 		delim = 'f', chr = 'c', byte = 'b'
 	} mode { Mode::delim };
-	bool processed { false };
 
-	void process(std::istream &in) {
-		@put(process);
+	bool should_print(int cur) {
+		return cur >= from && cur <= to;
 	}
 
 	void reset_list() {
@@ -24,6 +23,7 @@
 		to = nli::max();
 	}
 
+	@put(main prereqs);
 	int main(int argc, char *argv[]) {
 		@put(main);
 	}
@@ -32,8 +32,25 @@
 
 ```
 @def(main)
-	reset_list();
 	@put(parse args);
+@end(main)
+```
+
+```
+@def(main prereqs)
+	#include <iostream>
+	bool processed { false };
+	void process(std::istream &in) {
+		@put(process);
+	}
+@end(main prereqs)
+```
+
+```
+@add(main)
+	if (! processed) {
+		process(std::cin);
+	}
 @end(main)
 ```
 
@@ -55,23 +72,41 @@
 		cur = 1;
 		continue;
 	}
+@end(process ch)
+```
+
+```
+@add(process ch)
+	bool print { should_print(cur) };
+	@put(process pre);
+	if (print) {
+		std::cout.put(ch);
+	}
+	@put(process post);
+@end(process ch)
+```
+
+```
+@def(process pre)
 	if (mode == Mode::delim && ch == delim) {
 		++cur;
-		if (cur > from && cur <= to) {
+		if (print && should_print(cur)) {
 			std::cout.put(ch);
 		}
 		continue;
 	}
-	if (cur >= from  && cur <= to) {
-		std::cout.put(ch);
-	}
+@end(process pre)
+```
+
+```
+@def(process post)
 	if (mode == Mode::byte) {
 		++cur;
 	}
 	if (mode == Mode::chr && ! (ch & 0x80)) {
 		++cur;
 	}
-@end(process ch)
+@end(process post)
 ```
 
 ```
@@ -150,10 +185,3 @@
 @end(parse to)
 ```
 
-```
-@add(main)
-	if (! processed) {
-		process(std::cin);
-	}
-@end(main)
-```

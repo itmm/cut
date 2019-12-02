@@ -11,6 +11,9 @@
 <div>
 <h1>Implementation of <code><span class="var">cat</span></code></h1>
 </div>
+<ul><li>
+print content of files
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -21,6 +24,9 @@
 <span class="in1"></span>}<br/>
 <span class="macro">@End(<span class="name">file: cat.cpp</span>)</span><br/>
 </code></div>
+<ul><li>
+start with <code><span class="fn">main</span></code> function
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -28,6 +34,9 @@
 <span class="in1"></span><span class="macro">@put(<span class="name">parse args</span>)</span>;<br/>
 <span class="macro">@end(<span class="name">main</span>)</span><br/>
 </code></div>
+<ul><li>
+parse command line arguments
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -35,13 +44,35 @@
 <span class="in1"></span><span class="macro">@put(<span class="name">parse args prereqs</span>)</span>;<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
+<ul><li>
+stuff needed for parsing arguments
+</li></ul>
 </div>
 <div><div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">iostream</span>&gt;<br/>
-<br/>
+<span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
+</code></div>
+<ul><li>
+needs <code><span class="type">std</span>::<span class="type">istream</span></code>, <code><span class="type">std</span>::<span class="var">cout</span></code> and <code><span class="type">std</span>::<span class="var">cerr</span></code>
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">bool</span> <span class="var">processed</span> { <span class="num">false</span> };<br/>
+<span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
+</code></div>
+<ul><li>
+flag that indicates if some file was printed
+</li><li>
+if no files are specified in the command line arguments, standard  input will be used
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">void</span> <span class="fn">process</span>(<span class="type">std</span>::<span class="type">istream</span> &amp;<span class="keyword">in</span>) {<br/>
 <span class="in2"></span><span class="macro">@put(<span class="name">process</span>)</span>;<br/>
 <span class="in2"></span><span class="var">processed</span> = <span class="num">true</span>;<br/>
@@ -49,6 +80,11 @@
 <br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
+<ul><li>
+process file
+</li><li>
+and indicate that some file was printed
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -58,6 +94,9 @@
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">main</span>)</span><br/>
 </code></div>
+<ul><li>
+if no files are specified in the command line arguments, standard  input will be used
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -68,24 +107,38 @@
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process</span>)</span><br/>
 </code></div>
+<ul><li>
+copy each <code><span class="type">char</span></code> to standard output
+</li></ul>
 </div>
 <div><div>
 <code>
 <span class="macro">@def(<span class="name">parse args</span>)</span><br/>
 <span class="in1"></span><span class="type">bool</span> <span class="var">args_parsed</span> { <span class="num">false</span> };<br/>
+<span class="macro">@end(<span class="name">parse args</span>)</span><br/>
+</code></div>
+<ul><li>
+flag to indicate if additional options should be parsed
+</li><li>
+options start with <code>-</code>
+</li><li>
+every other argument is treated as a file name
+</li><li>
+after the option <code>--</code> all arguments are treated as file names
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">parse args</span>)</span><br/>
 <span class="in1"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">i</span> = <span class="num">1</span>; <span class="var">i</span> &lt; <span class="var">argc</span>; ++<span class="var">i</span>) {<br/>
 <span class="in2"></span><span class="type">const</span> <span class="type">char</span> *<span class="var">arg</span> = <span class="var">argv</span>[<span class="var">i</span>];<br/>
 <span class="in2"></span><span class="macro">@put(<span class="name">parse arg</span>)</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">parse args</span>)</span><br/>
 </code></div>
-</div>
-<div><div>
-<code>
-<span class="macro">@def(<span class="name">parse args prereqs</span>)</span><br/>
-<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">fstream</span>&gt;<br/>
-<span class="macro">@end(<span class="name">parse args prereqs</span>)</span><br/>
-</code></div>
+<ul><li>
+handle each argument
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -93,17 +146,46 @@
 <span class="in1"></span><span class="keyword">if</span> (! <span class="var">args_parsed</span> &amp;&amp; <span class="var">arg</span>[<span class="num">0</span>] == <span class="str">'-'</span>) {<br/>
 <span class="in2"></span><span class="macro">@put(<span class="name">parse option</span>)</span>;<br/>
 <span class="in1"></span>} <span class="keyword">else</span> {<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="type">ifstream</span> <span class="keyword">in</span> { <span class="var">arg</span> };<br/>
-<span class="in2"></span><span class="keyword">if</span> (<span class="keyword">in</span>) {<br/>
-<span class="in3"></span><span class="fn">process</span>(<span class="keyword">in</span>);<br/>
-<span class="in2"></span>} <span class="keyword">else</span> {<br/>
-<span class="in3"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"can't open "</span> &lt;&lt;<br/>
-<span class="in4"></span><span class="var">arg</span> &lt;&lt; <span class="str">'\n'</span>;<br/>
-<span class="in3"></span><span class="var">processed</span> = <span class="num">true</span>;<br/>
-<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">process file</span>)</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">parse arg</span>)</span><br/>
 </code></div>
+<ul><li>
+treat argument as option or file name
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">parse args prereqs</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">fstream</span>&gt;<br/>
+<span class="macro">@end(<span class="name">parse args prereqs</span>)</span><br/>
+</code></div>
+<ul><li>
+needs <code><span class="type">std</span>::<span class="type">ifstream</span></code>
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">process file</span>)</span><br/>
+<span class="in1"></span><span class="type">std</span>::<span class="type">ifstream</span> <span class="keyword">in</span> { <span class="var">arg</span> };<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="keyword">in</span>) {<br/>
+<span class="in2"></span><span class="fn">process</span>(<span class="keyword">in</span>);<br/>
+<span class="in1"></span>} <span class="keyword">else</span> {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"can't open "</span> &lt;&lt;<br/>
+<span class="in3"></span><span class="var">arg</span> &lt;&lt; <span class="str">'\n'</span>;<br/>
+<span class="in2"></span><span class="var">processed</span> = <span class="num">true</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">process file</span>)</span><br/>
+</code></div>
+<ul><li>
+process file
+</li><li>
+print message if file cannot be opened
+</li><li>
+a unreadable file counts as processed
+</li><li>
+so standard input is not processed afterwards
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -120,6 +202,13 @@
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">parse option</span>)</span><br/>
 </code></div>
+<ul><li>
+only the options <code>-</code> and <code>--</code> are processed:
+</li><li>
+<code>-</code> is the file name for standard input
+</li><li>
+<code>--</code> marks the end of options section
+</li></ul>
 </div>
 </body>
 </html>

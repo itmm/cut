@@ -1,55 +1,63 @@
 
-#line 4 "cat.md"
+#line 5 "cat.md"
 
 	
-#line 19 "cat.md"
+#line 22 "cat.md"
 
 	
-#line 65 "cat.md"
+#line 108 "cat.md"
 
 	#include <fstream>
 
-#line 20 "cat.md"
+#line 23 "cat.md"
 ;
 
-#line 25 "cat.md"
+#line 29 "cat.md"
 
 	#include <iostream>
 
+#line 36 "cat.md"
+
 	bool processed { false };
+
+#line 45 "cat.md"
+
 	void process(std::istream &in) {
 		
-#line 46 "cat.md"
+#line 67 "cat.md"
 
 	char ch;
 	while (in.get(ch)) {
 		std::cout.put(ch);
 	}
 
-#line 30 "cat.md"
+#line 47 "cat.md"
 ;
 		processed = true;
 	}
 
 
-#line 5 "cat.md"
+#line 6 "cat.md"
 ;
 	int main(int argc, char *argv[]) {
 		
-#line 13 "cat.md"
+#line 15 "cat.md"
 
 	
-#line 55 "cat.md"
+#line 77 "cat.md"
 
 	bool args_parsed { false };
+
+#line 87 "cat.md"
+
 	for (int i = 1; i < argc; ++i) {
 		const char *arg = argv[i];
 		
-#line 71 "cat.md"
+#line 97 "cat.md"
 
 	if (! args_parsed && arg[0] == '-') {
 		
-#line 88 "cat.md"
+#line 132 "cat.md"
 
 	if (arg[1] == '\0') {
 		process(std::cin);
@@ -62,32 +70,38 @@
 			" option " << arg << '\n';
 	}
 
-#line 73 "cat.md"
+#line 99 "cat.md"
 ;
 	} else {
-		std::ifstream in { arg };
-		if (in) {
-			process(in);
-		} else {
-			std::cerr << "can't open " <<
-				arg << '\n';
-			processed = true;
-		}
+		
+#line 115 "cat.md"
+
+	std::ifstream in { arg };
+	if (in) {
+		process(in);
+	} else {
+		std::cerr << "can't open " <<
+			arg << '\n';
+		processed = true;
 	}
 
-#line 59 "cat.md"
+#line 101 "cat.md"
 ;
 	}
 
-#line 14 "cat.md"
+#line 90 "cat.md"
+;
+	}
+
+#line 16 "cat.md"
 ;
 
-#line 38 "cat.md"
+#line 57 "cat.md"
 
 	if (! processed) {
 		process(std::cin);
 	}
 
-#line 7 "cat.md"
+#line 8 "cat.md"
 ;
 	}
