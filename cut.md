@@ -1,6 +1,7 @@
+# Implementation of `cut`
 
-#line 4 "cut.md"
-
+```
+@Def(file: cut.cpp)
 	#include <fstream>
 	#include <iostream>
 	#include <limits>
@@ -15,15 +16,40 @@
 	bool processed { false };
 
 	void process(std::istream &in) {
-		
-#line 41 "cut.md"
+		@put(process);
+	}
 
+	void reset_list() {
+		from = 0;
+		to = nli::max();
+	}
+
+	int main(int argc, char *argv[]) {
+		@put(main);
+	}
+@End(file: cut.cpp)
+```
+
+```
+@def(main)
+	reset_list();
+	@put(parse args);
+@end(main)
+```
+
+```
+@def(process)
 	int cur { 1 };
 	char ch;
 	while (in.get(ch)) {
-		
-#line 52 "cut.md"
+		@put(process ch);
+	}
+	processed = true;
+@end(process)
+```
 
+```
+@def(process ch)
 	if (ch == '\n') {
 		std::cout.put(ch);
 		cur = 1;
@@ -45,29 +71,11 @@
 	if (mode == Mode::chr && ! (ch & 0x80)) {
 		++cur;
 	}
+@end(process ch)
+```
 
-#line 45 "cut.md"
-;
-	}
-	processed = true;
-
-#line 19 "cut.md"
-;
-	}
-
-	void reset_list() {
-		from = 0;
-		to = nli::max();
-	}
-
-	int main(int argc, char *argv[]) {
-		
-#line 34 "cut.md"
-
-	reset_list();
-	
-#line 78 "cut.md"
-
+```
+@def(parse args)
 	bool args_parsed { false };
 	for (int i = 1; i < argc; ++i) {
 		const char *arg = argv[i];
@@ -81,45 +89,7 @@
 					break;
 				case 'f': case 'b': case 'c': {
 					mode = static_cast<Mode>(arg[1]);
-					
-#line 111 "cut.md"
-
-	const char *s { arg + 2 };
-	reset_list();
-	
-#line 127 "cut.md"
-
-	for (; isdigit(*s); ++s) {
-		from = from * 10 + (*s - '0');
-	}
-	to = from;
-
-#line 114 "cut.md"
-;
-	if (*s == '-') {
-		++s;
-		
-#line 136 "cut.md"
-
-	to = 0;
-	if (isdigit(*s)) {
-		for (; isdigit(*s); ++s) {
-			to = to * 10 + (*s - '0');
-		}
-	} else {
-		to = nli::max();
-	}
-
-#line 117 "cut.md"
-;
-	}
-	if (*s) {
-		std::cerr << "ignoring wrong list " << arg << '\n';
-		reset_list();
-	}
-
-#line 92 "cut.md"
-;
+					@put(parse list);
 					break;
 				}
 				default:
@@ -134,16 +104,51 @@
 			process(in);
 		}
 	}
+@end(parse args)
+```
 
-#line 36 "cut.md"
-;
+```
+@def(parse list)
+	const char *s { arg + 2 };
+	reset_list();
+	@put(parse from);
+	if (*s == '-') {
+		++s;
+		@put(parse to);
+	}
+	if (*s) {
+		std::cerr << "ignoring wrong list " << arg << '\n';
+		reset_list();
+	}
+@end(parse list)
+```
 
-#line 149 "cut.md"
+```
+@def(parse from)
+	for (; isdigit(*s); ++s) {
+		from = from * 10 + (*s - '0');
+	}
+	to = from;
+@end(parse from)
+```
 
+```
+@def(parse to)
+	to = 0;
+	if (isdigit(*s)) {
+		for (; isdigit(*s); ++s) {
+			to = to * 10 + (*s - '0');
+		}
+	} else {
+		to = nli::max();
+	}
+@end(parse to)
+```
+
+```
+@add(main)
 	if (! processed) {
 		process(std::cin);
 	}
-
-#line 28 "cut.md"
-;
-	}
+@end(main)
+```
