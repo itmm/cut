@@ -101,7 +101,12 @@
 			}
 		} else {
 			std::ifstream in { arg };
-			process(in);
+			if (in) {
+				process(in);
+			} else {
+				std::cerr << "can't open " << arg << '\n';
+				processed = true;
+			}
 		}
 	}
 @end(parse args)

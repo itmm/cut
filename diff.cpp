@@ -53,14 +53,31 @@
 	}
 	if (paths[0] == "-") {
 		std::ifstream n { paths[1].c_str() };
-		process(std::cin, n);
+		if (n) {
+			process(std::cin, n);
+		} else {
+			std::cerr << "can't open " << paths[1] << '\n';
+		}
 	} else if (paths[1] == "-") {
 		std::ifstream o { paths[0].c_str() };
-		process(o, std::cin);
+		if (o) {
+			process(o, std::cin);
+		} else {
+			std::cerr << "can't open " << paths[0] << '\n';
+		}
 	} else {
 		std::ifstream o { paths[0].c_str() };
 		std::ifstream n { paths[1].c_str() };
-		process(o, n);
+		if (o && n) {
+			process(o, n);
+		} else {
+			if (! o) {
+				std::cerr << "can't open " << paths[0] << '\n';
+			}
+			if (! n) {
+				std::cerr << "can't open " << paths[1] << '\n';
+			}
+		}
 	}
 
 #line 23 "diff.md"

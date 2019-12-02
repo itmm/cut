@@ -118,7 +118,12 @@
 <span class="in3"></span>}<br/>
 <span class="in2"></span>} <span class="keyword">else</span> {<br/>
 <span class="in3"></span><span class="type">std</span>::<span class="type">ifstream</span> <span class="keyword">in</span> { <span class="var">arg</span> };<br/>
-<span class="in3"></span><span class="fn">process</span>(<span class="keyword">in</span>);<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="keyword">in</span>) {<br/>
+<span class="in4"></span><span class="fn">process</span>(<span class="keyword">in</span>);<br/>
+<span class="in3"></span>} <span class="keyword">else</span> {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"can't open "</span> &lt;&lt; <span class="var">arg</span> &lt;&lt; <span class="str">'\n'</span>;<br/>
+<span class="in4"></span><span class="var">processed</span> = <span class="num">true</span>;<br/>
+<span class="in3"></span>}<br/>
 <span class="in2"></span>}<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">parse args</span>)</span><br/>

@@ -82,24 +82,24 @@
 				case 'f': case 'b': case 'c': {
 					mode = static_cast<Mode>(arg[1]);
 					
-#line 111 "cut.md"
+#line 116 "cut.md"
 
 	const char *s { arg + 2 };
 	reset_list();
 	
-#line 127 "cut.md"
+#line 132 "cut.md"
 
 	for (; isdigit(*s); ++s) {
 		from = from * 10 + (*s - '0');
 	}
 	to = from;
 
-#line 114 "cut.md"
+#line 119 "cut.md"
 ;
 	if (*s == '-') {
 		++s;
 		
-#line 136 "cut.md"
+#line 141 "cut.md"
 
 	to = 0;
 	if (isdigit(*s)) {
@@ -110,7 +110,7 @@
 		to = nli::max();
 	}
 
-#line 117 "cut.md"
+#line 122 "cut.md"
 ;
 	}
 	if (*s) {
@@ -131,14 +131,19 @@
 			}
 		} else {
 			std::ifstream in { arg };
-			process(in);
+			if (in) {
+				process(in);
+			} else {
+				std::cerr << "can't open " << arg << '\n';
+				processed = true;
+			}
 		}
 	}
 
 #line 36 "cut.md"
 ;
 
-#line 149 "cut.md"
+#line 154 "cut.md"
 
 	if (! processed) {
 		process(std::cin);

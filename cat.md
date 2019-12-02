@@ -2,15 +2,7 @@
 
 ```
 @Def(file: cat.cpp)
-	#include <fstream>
-	#include <iostream>
-	#include <limits>
-
-	bool processed { false };
-	void process(std::istream &in) {
-		@put(process);
-	}
-
+	@put(main prereqs);
 	int main(int argc, char *argv[]) {
 		@put(main);
 	}
@@ -24,34 +16,22 @@
 ```
 
 ```
-@def(process)
-	char ch;
-	while (in.get(ch)) {
-		std::cout.put(ch);
-	}
-	processed = true;
-@end(process)
+@def(main prereqs)
+	@put(parse args prereqs);
+@end(main prereqs)
 ```
 
 ```
-@def(parse args)
-	bool args_parsed { false };
-	for (int i = 1; i < argc; ++i) {
-		const char *arg = argv[i];
-		if (! args_parsed && arg[0] == '-') {
-			if (arg[1] == '\0') {
-				process(std::cin);
-			} else if (arg[1] == '-' && arg[2] == '\0') {
-				args_parsed = true;
-			} else {
-				std::cerr << "ignoring unknown option " << arg << '\n';
-			}
-		} else {
-			std::ifstream in { arg };
-			process(in);
-		}
+@add(main prereqs)
+	#include <iostream>
+
+	bool processed { false };
+	void process(std::istream &in) {
+		@put(process);
+		processed = true;
 	}
-@end(parse args)
+
+@end(main prereqs)
 ```
 
 ```
@@ -61,3 +41,61 @@
 	}
 @end(main)
 ```
+
+```
+@def(process)
+	char ch;
+	while (in.get(ch)) {
+		std::cout.put(ch);
+	}
+@end(process)
+```
+
+```
+@def(parse args)
+	bool args_parsed { false };
+	for (int i = 1; i < argc; ++i) {
+		const char *arg = argv[i];
+		@put(parse arg);
+	}
+@end(parse args)
+```
+
+```
+@def(parse args prereqs)
+	#include <fstream>
+@end(parse args prereqs)
+```
+
+```
+@def(parse arg)
+	if (! args_parsed && arg[0] == '-') {
+		@put(parse option);
+	} else {
+		std::ifstream in { arg };
+		if (in) {
+			process(in);
+		} else {
+			std::cerr << "can't open " <<
+				arg << '\n';
+			processed = true;
+		}
+	}
+@end(parse arg)
+```
+
+```
+@def(parse option)
+	if (arg[1] == '\0') {
+		process(std::cin);
+	} else if (arg[1] == '-' &&
+		arg[2] == '\0'
+	) {
+		args_parsed = true;
+	} else {
+		std::cerr << "ignoring unknown"
+			" option " << arg << '\n';
+	}
+@end(parse option)
+```
+
